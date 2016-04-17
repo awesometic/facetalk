@@ -1,0 +1,85 @@
+/* mycss.css */
+
+body{
+	margin:0;
+	/*background-color:#fe3;*/
+}
+#main{
+	width:600px;
+	min-height:500px;
+	margin:auto;
+}
+#content{
+	min-height:200px;
+}
+#header{
+	min-height:20px;
+	/*border-bottom:1px solid #ddd;*/
+	padding:5px;
+}
+#footer{
+	min-height:20px;
+	/*border-top:1px solid #ddd;*/
+	padding:5px;
+}
+.myform{
+	margin-top:50px;
+	margin-bottom:50px;
+	/*padding:5px;*/
+}
+.myform .row {
+	margin-top:5px;
+}
+#wenchuk{
+	background-color:#fff;
+	min-height:400px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#wenchuk-heading{
+    padding-top: 1px;
+    padding-bottom: 0px;
+}
+#wenchuk-body {
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 284px;
+}
+#wenchuk-footer {
+
+}
+#oronchuk{
+	border-left:1px solid white;
+    min-height:400px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#oronchuk-heading {
+    padding-top: 1px;
+    padding-bottom: 0px;
+}
+#oronchuk-body {
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 284px;
+}
+#oronchuk-footer {
+
+}
+
+#friend-name {
+    height: 36px;
+}
+
+#messageArea {
+    width: 100%;
+}
+
+#searched-friends {
+    height: 500px;
+}
+
+#remove-searched-friends {
+    height: 500px;
+}
+
