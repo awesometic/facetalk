@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div id="wenchuk-footer" align="center" class="panel-footer">
-                        <div class="btn-group">
+<!--                        <div class="btn-group">-->
                             <button id="friend-add" class="btn btn-primary glyphicon glyphicon-plus"></button>
                             <div class="modal fade" id="friend-add-modal" role="dialog">
                                 <div class="modal-dialog">
@@ -92,8 +92,8 @@
                                     </div>
                                 </div>
                             </div>
-<!--                            <button id="friend-email" class="btn btn-primary glyphicon glyphicon-envelope"></button>-->
-                        </div>
+<!--                            <button id="show-all-messages" class="btn btn-primary glyphicon glyphicon-user"></button>-->
+<!--                        </div>-->
                     </div>
                 </div>
                 <div id="oronchuk" class="col-md-8 panel panel-primary">

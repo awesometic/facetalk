@@ -1,13 +1,7 @@
 // http://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp
 $(document).ready(function() {
 
-    $("#friend-add").click(function() {
-        $("#friend-add-modal").modal("show");
-    });
-
-    $("#friend-add-modal").on('shown.bs.modal', function () {
-        $("#search-input").focus();
-
+    var add_getUserList = function() {
         $.post("getUserList.php", { search: "" })
             .done(function(data) {
                 data = $.parseJSON(data);
@@ -19,57 +13,86 @@ $(document).ready(function() {
                 list += "</ul>";
 
                 $("#searched-friends").html(list);
+                $("#search-friend-head-small").html("Type your friend's <strong>name</strong> or <strong>email</strong>!<strong>");
             });
+    };
 
-        $("#search-friend-head-small").html("Type your friend's <strong>name</strong> or <strong>email</strong>!<strong>");
-    });
+    var remove_getFriendList = function() {
+        $.post("getFriendList.php", { search: "" })
+            .done(function(data) {
+                data = $.parseJSON(data);
 
-    $("#friend-count").load("getFriendCount.php");
-    $("#friend-list").load("getFriendList.php", function(data) {
-        data = $.parseJSON(data);
+                var list = "<ul class='list-group'>";
+                $.each(data, function (index, value) {
+                    list += "<li class='list-group-item'>" + value.email + ", " + value.nickname + "</li>";
+                });
+                list += "</ul>";
 
-        var list = "";
-        $.each(data, function(index, value) {
-            list += "<a href='#' class='list-group-item' title='" + value.idx + ", " + value.email + "'>";
-            list += value.nickname;
-            list += "</a>";
-        });
+                $("#remove-searched-friends").html(list);
+                $("#remove-search-friend-head-small").html("Type your friend's <strong>name</strong> or <strong>email</strong>!<strong>");
+            });
+    };
 
-        $("#friend-list").html(list);
-    });
-    $("#friend-add-modal").on('hidden.bs.modal', function () {
+    var loadFriendListAndCount = function() {
         $("#friend-count").load("getFriendCount.php");
-        $("#friend-list").load("getFriendList.php", function(data) {
+        $("#friend-list").load("getFriendList.php", function (data) {
             data = $.parseJSON(data);
 
             var list = "";
-            $.each(data, function(index, value) {
+            $.each(data, function (index, value) {
                 list += "<a href='#' class='list-group-item' title='" + value.idx + ", " + value.email + "'>";
                 list += value.nickname;
                 list += "</a>";
-
-                $("#friend-list").html(list);
             });
+
+            $("#friend-list").html(list);
         });
+    };
+
+    var getMessage = function(friendidx) {
+        $("#messageArea").load("getMessage.php", {friendidx: friendidx}, function (data) {
+            data = $.parseJSON(data);
+
+            var list = "<ul class='list-group'>";
+            $.each(data, function (index, value) {
+                list += "<li class='list-group-item'>";
+                if (value.user == friendidx) {
+                    list += "<b>상대방: </b>";
+                } else {
+                    list += "<b>나: </b>";
+                }
+                list += value.message + "</li>";
+            });
+            list += "</ul>";
+
+            $("#messageArea").html(list);
+            // Go to bottom of div tag
+            // http://unikys.tistory.com/285
+            $("#oronchuk-body").scrollTop($("#oronchuk-body")[0].scrollHeight);
+        });
+    };
+
+    loadFriendListAndCount();
+
+    $("#friend-add").click(function() {
+        $("#friend-add-modal").modal("show");
+    });
+
+    $("#friend-add-modal").on('shown.bs.modal', function () {
+        $("#search-input").focus();
+
+        add_getUserList();
+    });
+
+    $("#friend-add-modal").on('hidden.bs.modal', function () {
+        loadFriendListAndCount();
         $("#search-input").val('');
     });
 
     // http://www.w3schools.com/jquery/event_keyup.asp
     $("#search-input").keyup(function() {
         if ($("#search-input").val() == "") {
-            $.post("getUserList.php", { search: "" })
-                .done(function(data) {
-                    data = $.parseJSON(data);
-
-                    var list = "<ul class='list-group'>";
-                    $.each(data, function(index, value) {
-                        list += "<li class='list-group-item'>" + value.email + ", " + value.nickname + "</li>";
-                    });
-                    list += "</ul>";
-
-                    $("#searched-friends").html(list);
-                    $("#search-friend-head-small").html("Type your friend's <strong>name</strong> or <strong>email</strong>!<strong>");
-                });
+            add_getUserList();
 
         } else {
             var searchKeyword = $("#search-input").val();
@@ -108,55 +131,17 @@ $(document).ready(function() {
     $("#friend-remove-modal").on('shown.bs.modal', function () {
         $("#remove-search-input").focus();
 
-        $.post("getFriendList.php", { search: "" })
-            .done(function(data) {
-                data = $.parseJSON(data);
-
-                var list = "<ul class='list-group'>";
-                $.each(data, function(index, value) {
-                    list += "<li class='list-group-item'>" + value.email + ", " + value.nickname + "</li>";
-                });
-                list += "</ul>";
-
-                $("#remove-searched-friends").html(list);
-            });
-
-        $("#remove-search-friend-head-small").html("Type your friend's <strong>name</strong> or <strong>email</strong>!<strong>");
+        remove_getFriendList();
     });
 
     $("#friend-remove-modal").on('hidden.bs.modal', function () {
-        $("#friend-count").load("getFriendCount.php");
-        $("#friend-list").load("getFriendList.php", function(data) {
-            data = $.parseJSON(data);
-
-            var list = "";
-            $.each(data, function(index, value) {
-                list += "<a href='#' class='list-group-item' title='" + value.idx + ", " + value.email + "'>";
-                list += value.nickname;
-                list += "</a>";
-            });
-
-            $("#friend-list").html(list);
-        });
-        $("#remove-search-input").val('');
+        loadFriendListAndCount();
     });
 
     // http://www.w3schools.com/jquery/event_keyup.asp
     $("#remove-search-input").keyup(function() {
         if ($("#remove-search-input").val() == "") {
-            $.post("getFriendList.php", { search: "" })
-                .done(function(data) {
-                    data = $.parseJSON(data);
-
-                    var list = "<ul class='list-group'>";
-                    $.each(data, function(index, value) {
-                        list += "<li class='list-group-item'>" + value.email + ", " + value.nickname + "</li>";
-                    });
-                    list += "</ul>";
-
-                    $("#remove-searched-friends").html(list);
-                    $("#remove-search-friend-head-small").html("Type your friend's <strong>name</strong> or <strong>email</strong>!<strong>");
-                });
+            remove_getFriendList();
 
         } else {
             var searchKeyword = $("#remove-search-input").val();
@@ -195,27 +180,7 @@ $(document).ready(function() {
 
         $("#friend-name").html("<h3><strong>" + this.innerHTML + "</strong> (" + friendEmail + ")" + "</h3>");
 
-        $.post("getMessage.php", { friendidx: friendidx })
-            .done(function(data) {
-                data = $.parseJSON(data);
-
-                var list = "<ul class='list-group'>";
-                $.each(data, function(index, value) {
-                    list += "<li class='list-group-item'>";
-                    if (value.user == friendidx) {
-                        list += "<b>상대방: </b>";
-                    } else {
-                        list += "<b>나: </b>";
-                    }
-                    list += value.message + "</li>";
-                });
-                list += "</ul>";
-
-                $("#messageArea").html(list);
-                // Go to bottom of div tag
-                // http://unikys.tistory.com/285
-                $("#oronchuk-body").scrollTop($("#oronchuk-body")[0].scrollHeight);
-            });
+        getMessage(friendidx);
     });
 
     $("#send-message-input").keydown(function(e) {
@@ -223,6 +188,8 @@ $(document).ready(function() {
             var message = $("#send-message-input").val();
             if (message == "")
                 return;
+
+            message = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
             var friendnameDiv = $("#friend-name").text();
             var friendName = friendnameDiv.split(" ")[0].trim();
@@ -241,26 +208,7 @@ $(document).ready(function() {
                         friendName: friendName,
                         friendEmail: friendEmail
                     }).done (function (friendidx) {
-                        $("#messageArea").load("getMessage.php", { friendidx: friendidx }, function (data) {
-                            data = $.parseJSON(data);
-
-                            var list = "<ul class='list-group'>";
-                            $.each(data, function (index, value) {
-                                list += "<li class='list-group-item'>";
-                                if (value.user == friendidx) {
-                                    list += "<b>상대방: </b>";
-                                } else {
-                                    list += "<b>나: </b>";
-                                }
-                                list += value.message + "</li>";
-                            });
-                            list += "</ul>";
-
-                            $("#messageArea").html(list);
-                            // Go to bottom of div tag
-                            // http://unikys.tistory.com/285
-                            $("#oronchuk-body").scrollTop($("#oronchuk-body")[0].scrollHeight);
-                        });
+                       getMessage(friendidx);
                     });
                 } else {
                     alert("Getting messages fail!");

@@ -8,6 +8,9 @@ $useridx = $_SESSION["useridx"];
 $friendName = $_POST["friendName"];
 $friendEmail = $_POST["friendEmail"];
 $message = $_POST["message"];
+// Incapacitate single quotation
+// http://ra2kstar.tistory.com/67
+$message = addslashes($message);
 
 // SQL subquery references
 // http://www.devpia.com/MAEUL/Contents/Detail.aspx?BoardID=38&MAEULNo=16&no=34150&ref=34148
