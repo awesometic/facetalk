@@ -24,13 +24,15 @@
 session_start();
 require_once("dbconn.php");
 
+$myDomain = "219.240.6.172";
+
 $page = basename($_SERVER["REQUEST_URI"]);
 $site = dirname($_SERVER["REQUEST_URI"]);
 
 if (isset($_SESSION["login"])) {
     if ($page == "logout.php") {
         session_destroy();
-        header("Location:http://localhost$site/index.php", 301);
+        header("Location:http://$myDomain$site/index.php", 301);
 
     } else if ($page == "getFriendList.php" || $page == "getUserList.php"
         || $page == "getFriendCount.php" || $page == "addFriend.php"
@@ -39,7 +41,7 @@ if (isset($_SESSION["login"])) {
         /* Preventing redirection to main.php page */
 
     } else if ($page != "main.php") {
-        header("Location:http://localhost$site/main.php", 301);
+        header("Location:http://$myDomain$site/main.php", 301);
 
     }
 } else if ($_POST) {
@@ -58,7 +60,7 @@ if (isset($_SESSION["login"])) {
                 $_SESSION["email"] = $email;
                 $_SESSION["login"] = true;
 
-                header("Location:http://localhost$site/main.php", 301);
+                header("Location:http://$myDomain$site/main.php", 301);
             } else if ($useridx == -1) {
                 $_SESSION["invalidEmail"] = true;
                 echo "<script> history.back() </script>";
@@ -96,7 +98,7 @@ if (isset($_SESSION["login"])) {
 
                 require_once("lib/dbconn.php");
                 if (saveRecords($sql)) {
-                    header("Location:http://localhost$site/main.php", 301);
+                    header("Location:http://$myDomain$site/main.php", 301);
                 }
             }
         }
@@ -104,11 +106,11 @@ if (isset($_SESSION["login"])) {
 } else {
     if ($_SERVER["REQUEST_URI"] == "/websec/facetalk/") {
         $currentURI = $_SERVER["REQUEST_URI"];
-        $targetURI = "Location:http://localhost";
+        $targetURI = "Location:http://$myDomain";
         $targetURI .= $currentURI;
         $targetURI .= "index.php";
         header($targetURI, 301);
     } else if ($page == "main.php") {
-        header("Location:http://localhost$site/index.php", 301);
+        header("Location:http://$myDomain$site/index.php", 301);
     }
 }
