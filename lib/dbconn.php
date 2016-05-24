@@ -12,6 +12,7 @@ $pass = "awesometic";
 $database = "face_talk";
 
 $conn = mysqli_connect($host, $user, $pass, $database);
+mysqli_query($conn, "SET NAMES 'utf8mb4'");
 //if ($conn)
 //    echo "Database Connected <br>";
 //else
