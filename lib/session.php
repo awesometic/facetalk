@@ -24,10 +24,11 @@
 session_start();
 require_once("dbconn.php");
 
-$myDomain = "219.240.6.172";
+$myDomain = "219.240.6.172:50038";
 
 $page = basename($_SERVER["REQUEST_URI"]);
-$site = dirname($_SERVER["REQUEST_URI"]);
+$site = "";
+// $site = dirname($_SERVER["REQUEST_URI"]);
 
 if (isset($_SESSION["login"])) {
     if ($page == "logout.php") {
@@ -104,7 +105,7 @@ if (isset($_SESSION["login"])) {
         }
     }
 } else {
-    if ($_SERVER["REQUEST_URI"] == "/websec/facetalk/") {
+    if ($_SERVER["REQUEST_URI"] == "/") {
         $currentURI = $_SERVER["REQUEST_URI"];
         $targetURI = "Location:http://$myDomain";
         $targetURI .= $currentURI;
