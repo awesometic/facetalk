@@ -11,7 +11,7 @@ $falseCode = -1;
 $wrongCode = -9;
 
 /* JSON Parsing: http://terminaldogma.tistory.com/52 */
-$JSONObjectUTF8 = json_encode(utf8_encode($JSONObject));
+//$JSONObjectUTF8 = json_encode(utf8_encode($JSONObject));
 $decodedJSON = json_decode($JSONObject);
 switch ($callSign) {
 
