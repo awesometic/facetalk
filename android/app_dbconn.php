@@ -29,8 +29,9 @@ switch ($callSign) {
         $email = $decodedJSON->email;
         $password = $decodedJSON->password;
 
-        $useridx = app_loginValidation($email, $password);
-        echo "$useridx";
+        echo "$email";
+//        $useridx = app_loginValidation($email, $password);
+//        echo "$useridx";
 
         break;
     default:
