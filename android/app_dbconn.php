@@ -11,7 +11,7 @@ switch ($callSign) {
     case "loginValidation":
         $email = $JSONObject["email"];
         $password = $JSONObject["password"];
-
+        
         $useridx = app_loginValidation($email, $password);
         echo "$useridx";
         break;
