@@ -9,26 +9,28 @@ $trueCode = 1;
 $falseCode = -1;
 $wrongCode = -9;
 
+/* JSON Parsing: http://terminaldogma.tistory.com/52 */
+$JSONObject = utf8_encode($JSONObject);
+$decodedJSON = json_decode($JSONObject);
 switch ($callSign) {
 
     case "addUser":
-//        $email = $JSONObject["email"];
-//        $password = $JSONObject["password"];
-//        $nickname = $JSONObject["nickname"];
-//        $age = $JSONObject["age"];
-//        $gender = $JSONObject["gender"];
-//        $resultCode = app_addUser($email, $password, $nickname, intval($age), $gender);
-//
-//        echo "$resultCode";
-//
+        $email = $decodedJSON->email;
+        $password = $decodedJSON->password;
+        $nickname = $decodedJSON->nickname;
+        $age = $decodedJSON->age;
+        $gender = $decodedJSON->gender;
+
+        $resultCode = app_addUser($email, $password, $nickname, intval($age), $gender);
+        echo "$resultCode";
+
         break;
     case "loginValidation":
-        $email = $JSONObject["email"];
-        $password = $JSONObject["password"];
-        echo "$JSONObject";
+        $email = $decodedJSON->email;
+        $password = $decodedJSON->password;
 
-//        $useridx = app_loginValidation($email, $password);
-//        echo "$useridx";
+        $useridx = app_loginValidation($email, $password);
+        echo "$useridx";
 
         break;
     default:
