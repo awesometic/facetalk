@@ -1,7 +1,7 @@
 <?php
 require_once("../lib/session.php");
 require_once("../lib/dbconn.php");
-header('Content-Type: application/json; charset=utf-8');
+header('Content-Type: html/text; charset=utf-8');
 
 $callSign = $_POST['callSign'];
 $JSONObject = $_POST['json'];
@@ -12,7 +12,7 @@ $wrongCode = -9;
 
 /* JSON Parsing: http://terminaldogma.tistory.com/52 */
 //$JSONObjectUTF8 = json_encode(utf8_encode($JSONObject));
-$decodedJSON = json_decode($JSONObject, JSON_UNESCAPED_UNICODE);
+$decodedJSON = json_decode($JSONObject);
 switch ($callSign) {
 
     case "addUser":
@@ -22,7 +22,7 @@ switch ($callSign) {
         $age = $decodedJSON->age;
         $gender = $decodedJSON->gender;
 
-        echo "$nickname";
+        echo "$JSONObject";
 //        $resultCode = app_addUser($email, $password, $nickname, intval($age), $gender);
 //        echo "$resultCode";
 
