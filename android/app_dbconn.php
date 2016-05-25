@@ -1,5 +1,5 @@
 <?php
-
+require_once("../lib/session.php");
 require_once("../lib/dbconn.php");
 
 $callSign = $_POST['callSign'];
