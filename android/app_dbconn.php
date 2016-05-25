@@ -9,7 +9,7 @@ $wrongCode = -9;
 switch ($callSign) {
 
     case "loginValidation":
-        echo "test";
+        echo "$JSONObject";
 //        $useridx = app_loginValidation($email, $password);
 //        echo "$useridx";
         break;
