@@ -38,7 +38,8 @@ if (isset($_SESSION["login"])) {
     } else if ($page == "getFriendList.php" || $page == "getUserList.php"
         || $page == "getFriendCount.php" || $page == "addFriend.php"
         || $page == "getMessage.php" || $page == "addMessage.php"
-        || $page == "getUserIdx.php" || $page == "removeFriend.php") {
+        || $page == "getUserIdx.php" || $page == "removeFriend.php"
+        || $page == "app_dbconn.php") {
         /* Preventing redirection to main.php page */
 
     } else if ($page != "main.php") {
