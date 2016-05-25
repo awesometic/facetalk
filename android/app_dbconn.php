@@ -1,4 +1,5 @@
 <?php
+require_once("../lib/session.php");
 require_once("../lib/dbconn.php");
 
 $callSign = $_POST['callSign'];
@@ -27,7 +28,7 @@ switch ($callSign) {
     case "loginValidation":
         $email = $decodedJSON->email;
         $password = $decodedJSON->password;
-
+        
         $useridx = app_loginValidation($email, $password);
         echo "$useridx";
 
