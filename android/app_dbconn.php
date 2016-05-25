@@ -10,8 +10,8 @@ $falseCode = -1;
 $wrongCode = -9;
 
 /* JSON Parsing: http://terminaldogma.tistory.com/52 */
-$JSONObjectUTF8 = utf8_encode($JSONObject);
-$decodedJSON = json_decode($JSONObjectUTF8);
+//$JSONObjectUTF8 = utf8_encode($JSONObject);
+$decodedJSON = json_decode($JSONObject);
 switch ($callSign) {
 
     case "addUser":
