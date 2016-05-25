@@ -12,22 +12,23 @@ $wrongCode = -9;
 switch ($callSign) {
 
     case "addUser":
-        $email = $JSONObject["email"];
-        $password = $JSONObject["password"];
-        $nickname = $JSONObject["nickname"];
-        $age = $JSONObject["age"];
-        $gender = $JSONObject["gender"];
-        $resultCode = app_addUser($email, $password, $nickname, intval($age), $gender);
-
-        echo "$resultCode";
-
+//        $email = $JSONObject["email"];
+//        $password = $JSONObject["password"];
+//        $nickname = $JSONObject["nickname"];
+//        $age = $JSONObject["age"];
+//        $gender = $JSONObject["gender"];
+//        $resultCode = app_addUser($email, $password, $nickname, intval($age), $gender);
+//
+//        echo "$resultCode";
+//
         break;
     case "loginValidation":
         $email = $JSONObject["email"];
         $password = $JSONObject["password"];
-        
-        $useridx = app_loginValidation($email, $password);
-        echo "$useridx";
+        echo("$email");
+
+//        $useridx = app_loginValidation($email, $password);
+//        echo "$useridx";
 
         break;
     default:
