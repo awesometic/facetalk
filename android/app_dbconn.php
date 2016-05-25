@@ -1,6 +1,7 @@
 <?php
 require_once("../lib/session.php");
 require_once("../lib/dbconn.php");
+header('Content-Type: text/html; charset=utf-8');
 
 $callSign = $_POST['callSign'];
 $JSONObject = $_POST['json'];
