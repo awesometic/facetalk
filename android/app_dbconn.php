@@ -1,7 +1,7 @@
 <?php
 require_once("../lib/session.php");
 require_once("../lib/dbconn.php");
-header('Content-Type: text/html; charset=utf-8');
+header('Content-Type: application/json; charset=utf-8');
 
 $callSign = $_POST['callSign'];
 $JSONObject = $_POST['json'];
@@ -11,7 +11,7 @@ $falseCode = -1;
 $wrongCode = -9;
 
 /* JSON Parsing: http://terminaldogma.tistory.com/52 */
-//$JSONObjectUTF8 = utf8_encode($JSONObject);
+$JSONObjectUTF8 = json_encode(utf8_encode($JSONObject));
 $decodedJSON = json_decode($JSONObject);
 switch ($callSign) {
 
