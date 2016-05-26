@@ -25,6 +25,13 @@ switch ($callSign) {
         echo "$resultCode";
 
         break;
+    case "getNickname":
+        $useridx = $decodedJSON->useridx;
+        
+        $nickname = app_getNickname($useridx);
+        echo "$nickname";
+        
+        break;
     case "loginValidation":
         $email = $decodedJSON->email;
         $password = $decodedJSON->password;
@@ -48,6 +55,13 @@ function app_addUser($email, $password, $nickname, $age, $gender) {
         return $trueCode;
     else
         return $falseCode;
+}
+
+function app_getNickname($useridx) {
+    $sql = "SELECT nickname FROM users WHERE idx=$useridx";
+    $nickname = getNickname($sql);
+
+    return $nickname;
 }
 
 function app_loginValidation($email, $password) {
