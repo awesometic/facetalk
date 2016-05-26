@@ -78,19 +78,26 @@ function app_loginValidation($email, $password) {
 }
 
 function app_getNickname($useridx) {
-    $sql = "SELECT nickname FROM users WHERE idx=$useridx";
-    $nickname = getNickname($sql);
+    global $wrongCode;
+
+    if ($useridx == $wrongCode)
+        $nickname = "error";
+    else {
+        $sql = "SELECT nickname FROM users WHERE idx=$useridx";
+        $nickname = getNickname($sql);
+    }
 
     return $nickname;
 }
 
 function app_getFriend($useridx) {
     $sql = "SELECT idx, email, nickname, age, gender FROM users ";
-    $sql .= "WHERE (idx IN SELECT friend FROM friends WHERE user=$useridx) ";
+    $sql .= "WHERE (idx IN (SELECT friend FROM friends WHERE user=$useridx) ";
     $sql .= "OR idx IN (SELECT user FROM friends WHERE friend=$useridx)) ";
     $sql .= "ORDER BY nickname";
     $friends = getUserList($sql);
-
+    $friends = json_encode($friends);
+    
     return $friends;
 }
 
