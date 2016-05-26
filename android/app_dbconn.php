@@ -25,6 +25,14 @@ switch ($callSign) {
         echo "$resultCode";
 
         break;
+    case "loginValidation":
+        $email = $decodedJSON->email;
+        $password = $decodedJSON->password;
+
+        $useridx = app_loginValidation($email, $password);
+        echo "$useridx";
+
+        break;
     case "getNickname":
         $useridx = $decodedJSON->useridx;
         
@@ -32,12 +40,18 @@ switch ($callSign) {
         echo "$nickname";
         
         break;
-    case "loginValidation":
-        $email = $decodedJSON->email;
-        $password = $decodedJSON->password;
-  
-        $useridx = app_loginValidation($email, $password);
-        echo "$useridx";
+    case "getFriend":
+        $useridx = $decodedJSON->useridx;
+
+        $friends = app_getFriend($useridx);
+        echo "$friends";
+
+        break;
+    case "getFriendCount":
+        $useridx = $decodedJSON->useridx;
+
+        $count = app_getFriendCount($useridx);
+        echo "$count";
 
         break;
     default:
@@ -57,6 +71,12 @@ function app_addUser($email, $password, $nickname, $age, $gender) {
         return $falseCode;
 }
 
+function app_loginValidation($email, $password) {
+    $useridx = loginValidation($email, $password);
+
+    return $useridx;
+}
+
 function app_getNickname($useridx) {
     $sql = "SELECT nickname FROM users WHERE idx=$useridx";
     $nickname = getNickname($sql);
@@ -64,9 +84,18 @@ function app_getNickname($useridx) {
     return $nickname;
 }
 
-function app_loginValidation($email, $password) {
+function app_getFriend($useridx) {
+    $sql = "SELECT idx, email, nickname, age, gender FROM users ";
+    $sql .= "WHERE (idx IN SELECT friend FROM friends WHERE user=$useridx) ";
+    $sql .= "OR idx IN (SELECT user FROM friends WHERE friend=$useridx)) ";
+    $sql .= "ORDER BY nickname";
+    $friends = getUserList($sql);
 
-    $useridx = loginValidation($email, $password);
+    return $friends;
+}
 
-    return $useridx;
+function app_getFriendCount($useridx) {
+    $count = getFriendCount($useridx);
+
+    return $count;
 }
