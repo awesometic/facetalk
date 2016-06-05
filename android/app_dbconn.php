@@ -46,6 +46,22 @@ switch ($callSign) {
         $friends = app_getFriend($useridx);
         echo "$friends";
 
+    
+    break;
+    case "getAllFriends":
+        $useridx = $decodedJSON->useridx;
+        
+        $friends = app_getAllFriends($useridx);
+        echo "$friends";        
+      
+        break;
+    case "getSearchedFriends":
+        $useridx = $decodedJSON->useridx;
+        $searchKeyword = $decodedJSON->searchKeyword;
+        
+        $friends = app_getSearchedFriends($useridx, $searchKeyword);
+        echo "$friends";        
+
         break;
     case "getFriendCount":
         $useridx = $decodedJSON->useridx;
@@ -98,6 +114,29 @@ function app_getFriend($useridx) {
     $friends = getUserList($sql);
     $friends = json_encode($friends);
     
+    return $friends;
+}
+
+function app_getAllFriends($useridx) {
+    $sql = "SELECT idx, email, nickname, age, gender FROM users ";
+    $sql .= "WHERE idx!=$useridx ";
+    $sql .= "AND (idx NOT IN (SELECT user FROM friends WHERE friend=$useridx) ";
+    $sql .= "AND idx NOT IN (SELECT friend FROM friends WHERE user=$useridx))";
+    $friends = getUserList($sql);
+    $friends = json_encode($friends);
+
+    return $friends;
+}
+
+function app_getSearchedFriends($useridx, $searchKeyword) {
+    $sql = "SELECT idx, email, nickname, age, gender FROM users ";
+    $sql .= "WHERE idx!=$useridx ";
+    $sql .= "AND (idx NOT IN (SELECT user FROM friends WHERE friend=$useridx) ";
+    $sql .= "AND idx NOT IN (SELECT friend FROM friends WHERE user=$useridx)) ";
+    $sql .= "AND (email LIKE '%$searchKeyword%' OR nickname LIKE '%$searchKeyword%') ORDER BY nickname";
+    $friends = getUserList($sql);
+    $friends = json_encode($friends);
+
     return $friends;
 }
 
