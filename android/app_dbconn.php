@@ -47,7 +47,7 @@ switch ($callSign) {
         echo "$friends";
 
     
-    break;
+        break;
     case "getAllFriends":
         $useridx = $decodedJSON->useridx;
         
@@ -55,12 +55,20 @@ switch ($callSign) {
         echo "$friends";        
       
         break;
-    case "getSearchedFriends":
+    case "getSearchedFriends_add":
         $useridx = $decodedJSON->useridx;
         $searchKeyword = $decodedJSON->searchKeyword;
         
-        $friends = app_getSearchedFriends($useridx, $searchKeyword);
+        $friends = app_getSearchedFriends_add($useridx, $searchKeyword);
         echo "$friends";        
+
+        break;
+    case "getSearchedFriends_remove":
+        $useridx = $decodedJSON->useridx;
+        $searchKeyword = $decodedJSON->searchKeyword;
+
+        $friends = app_getSearchedFriends_remove($useridx, $searchKeyword);
+        echo "$friends";
 
         break;
     case "getFriendCount":
@@ -128,7 +136,7 @@ function app_getAllFriends($useridx) {
     return $friends;
 }
 
-function app_getSearchedFriends($useridx, $searchKeyword) {
+function app_getSearchedFriends_add($useridx, $searchKeyword) {
     $sql = "SELECT idx, email, nickname, age, gender FROM users ";
     $sql .= "WHERE idx!=$useridx ";
     $sql .= "AND (idx NOT IN (SELECT user FROM friends WHERE friend=$useridx) ";
@@ -136,6 +144,17 @@ function app_getSearchedFriends($useridx, $searchKeyword) {
     $sql .= "AND (email LIKE '%$searchKeyword%' OR nickname LIKE '%$searchKeyword%') ORDER BY nickname";
     $friends = getUserList($sql);
     $friends = json_encode($friends);
+
+    return $friends;
+}
+
+function app_getSearchedFriends_remove($useridx, $searchKeyword) {
+    $sql = "SELECT idx, email, nickname, age, gender FROM users ";
+    $sql .= "WHERE (idx IN (SELECT friend FROM friends WHERE user=$useridx) ";
+    $sql .= "OR idx IN (SELECT user FROM friends WHERE friend=$useridx))";
+    $sql .= "AND (email LIKE '%$searchKeyword%' OR nickname LIKE '%$searchKeyword%') ORDER BY nickname";
+    $friends = getUserList($sql);
+    $friends = json_encode($friends);    
 
     return $friends;
 }
