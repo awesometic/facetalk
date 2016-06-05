@@ -28,7 +28,6 @@ $myDomain = "219.240.6.172:50038";
 
 $page = basename($_SERVER["REQUEST_URI"]);
 $site = "";
-// $site = dirname($_SERVER["REQUEST_URI"]);
 
 if (isset($_SESSION["login"])) {
     if ($page == "logout.php") {
@@ -40,7 +39,8 @@ if (isset($_SESSION["login"])) {
         || $page == "getMessage.php" || $page == "addMessage.php"
         || $page == "getUserIdx.php" || $page == "removeFriend.php"
         || $page == "app_dbconn.php") {
-        /* Preventing redirection to main.php page */
+        /* Preventing redirection to main.php page
+           when bringing data from database via php file */
         /* Very Dangerous!! Need to fix */
 
     } else if ($page != "main.php") {
@@ -113,7 +113,8 @@ if (isset($_SESSION["login"])) {
         $targetURI .= $currentURI;
         $targetURI .= "index.php";
         header($targetURI, 301);
-    } else if ($page == "main.php") {
-        header("Location:http://$myDomain$site/index.php", 301);
+    } else if ($page != "index.php") {
+        if ($page != "register.php")
+            header("Location:http://$myDomain$site/index.php", 301);
     }
 }
