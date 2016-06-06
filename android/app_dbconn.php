@@ -25,6 +25,28 @@ switch ($callSign) {
         echo "$resultCode";
 
         break;
+    case "addFriends":
+        $useridx = $decodedJSON->useridx;
+        $friendsCount = $decodedJSON->friendsCount;
+        for ($i = 0; $i < $friendsCount; $i++) {
+            $selectFriend = select . $i;
+            app_addFriend($useridx, $decodedJSON->$selectFriend);
+        }
+
+        echo "$trueCode";
+       
+        break;
+    case "removeFriends":
+        $useridx = $decodedJSON->useridx;
+        $friendsCount = $decodedJSON->friendsCount;
+        for ($i = 0; $i < $friendsCount; $i++) {
+            $selectFriend = select . $i;
+            app_removeFriend($useridx, $decodedJSON->$selectFriend);
+        }
+
+        echo "$trueCode";
+
+        break;
     case "loginValidation":
         $email = $decodedJSON->email;
         $password = $decodedJSON->password;
@@ -45,8 +67,7 @@ switch ($callSign) {
 
         $friends = app_getFriend($useridx);
         echo "$friends";
-
-    
+   
         break;
     case "getAllFriends":
         $useridx = $decodedJSON->useridx;
@@ -93,6 +114,21 @@ function app_addUser($email, $password, $nickname, $age, $gender) {
         return $trueCode;
     else
         return $falseCode;
+}
+
+function app_addFriend($useridx, $friendidx) {
+    $sql = "INSERT INTO friends (user, friend) VALUES ($useridx, $friendidx)";
+
+    addFriend($sql);
+}
+
+function app_removeFriend($useridx, $friendidx) {
+    $sql = "DELETE FROM friends WHERE (user=$friendidx AND friend=$useridx) ";
+    $sql .= "OR (user=$useridx AND friend=$friendidx)";
+    removeFriend($sql);
+    $sql = "DELETE FROM messages WHERE (user=$friendidx AND to_user=$useridx) ";
+    $sql .= "OR (user=$useridx AND to_user=$friendidx)";
+    removeFriend($sql);
 }
 
 function app_loginValidation($email, $password) {
