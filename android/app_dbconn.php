@@ -55,6 +55,15 @@ switch ($callSign) {
         echo "$useridx";
 
         break;
+    case "addMessage":
+        $useridx = $decodedJSON->useridx;
+        $friendidx = $decodedJSON->friendidx;
+        $message = $decodedJSON->message;
+
+        $resultCode = app_addMessage($useridx, $friendidx, $message);
+        echo "$resultCode";
+    
+        break;
     case "getMessage":
         $useridx = $decodedJSON->useridx;
         $friendidx = $decodedJSON->friendidx;
@@ -143,6 +152,21 @@ function app_loginValidation($email, $password) {
     $useridx = loginValidation($email, $password);
 
     return $useridx;
+}
+
+function app_addMessage($useridx, $friendidx, $message) {
+    global $trueCode;
+    global $falseCode;
+
+    $message = addslashes($message);
+
+    $sql = "INSERT INTO messages (user, to_user, message) ";
+    $sql .= "VALUES ($useridx, $friendidx, '$message')";
+    
+    if (addMessage($sql))
+        return $trueCode;
+    else
+        return $falseCode;
 }
 
 function app_getMessage($useridx, $friendidx) {
