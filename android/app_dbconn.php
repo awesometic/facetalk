@@ -55,6 +55,14 @@ switch ($callSign) {
         echo "$useridx";
 
         break;
+    case "getMessage":
+        $useridx = $decodedJSON->useridx;
+        $friendidx = $decodedJSON->friendidx;
+
+        $message = app_getMessage($useridx, $friendidx);
+        echo "$message";
+
+        break;
     case "getNickname":
         $useridx = $decodedJSON->useridx;
         
@@ -137,6 +145,14 @@ function app_loginValidation($email, $password) {
     return $useridx;
 }
 
+function app_getMessage($useridx, $friendidx) {
+    $sql = "SELECT message, user FROM messages ";
+    $sql .= "WHERE (user=$useridx AND to_user=$friendidx) OR (user=$friendidx AND to_user=$useridx)";
+    $message = json_encode(getMessage($sql));
+
+    return $message; 
+}
+
 function app_getNickname($useridx) {
     global $wrongCode;
 
@@ -155,8 +171,7 @@ function app_getFriend($useridx) {
     $sql .= "WHERE (idx IN (SELECT friend FROM friends WHERE user=$useridx) ";
     $sql .= "OR idx IN (SELECT user FROM friends WHERE friend=$useridx)) ";
     $sql .= "ORDER BY nickname";
-    $friends = getUserList($sql);
-    $friends = json_encode($friends);
+    $friends = json_encode(getUserList($sql));
     
     return $friends;
 }
@@ -166,8 +181,7 @@ function app_getAllFriends($useridx) {
     $sql .= "WHERE idx!=$useridx ";
     $sql .= "AND (idx NOT IN (SELECT user FROM friends WHERE friend=$useridx) ";
     $sql .= "AND idx NOT IN (SELECT friend FROM friends WHERE user=$useridx))";
-    $friends = getUserList($sql);
-    $friends = json_encode($friends);
+    $friends = json_encode(getUserList($sql));
 
     return $friends;
 }
@@ -178,8 +192,7 @@ function app_getSearchedFriends_add($useridx, $searchKeyword) {
     $sql .= "AND (idx NOT IN (SELECT user FROM friends WHERE friend=$useridx) ";
     $sql .= "AND idx NOT IN (SELECT friend FROM friends WHERE user=$useridx)) ";
     $sql .= "AND (email LIKE '%$searchKeyword%' OR nickname LIKE '%$searchKeyword%') ORDER BY nickname";
-    $friends = getUserList($sql);
-    $friends = json_encode($friends);
+    $friends = json_encode(getUserList($sql));
 
     return $friends;
 }
@@ -189,8 +202,7 @@ function app_getSearchedFriends_remove($useridx, $searchKeyword) {
     $sql .= "WHERE (idx IN (SELECT friend FROM friends WHERE user=$useridx) ";
     $sql .= "OR idx IN (SELECT user FROM friends WHERE friend=$useridx))";
     $sql .= "AND (email LIKE '%$searchKeyword%' OR nickname LIKE '%$searchKeyword%') ORDER BY nickname";
-    $friends = getUserList($sql);
-    $friends = json_encode($friends);    
+    $friends = json_encode(getUserList($sql));
 
     return $friends;
 }
