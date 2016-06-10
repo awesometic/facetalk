@@ -83,3 +83,10 @@ body{
     height: 500px;
 }
 
+.panel-primary > .panel-heading {
+    background-color: #3b5998!important;
+}
+
+.btn-primary {
+    background-color: #3b5998!important;
+}

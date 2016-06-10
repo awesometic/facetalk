@@ -98,21 +98,14 @@ function getFriendCount($useridx)
 {
     global $conn;
 
-    $friends = 0;
+    $sql = "SELECT COUNT(*) cnt FROM friends WHERE user=$useridx OR friend=$useridx ";
+    $sql .= "AND (user!=friend)";
 
-    $result = mysqli_query($conn, "SELECT COUNT(*) cnt FROM friends WHERE user=$useridx");
+    $result = mysqli_query($conn, $sql);
     if ($result) {
         $recs = mysqli_fetch_assoc($result);
-        $friends += $recs["cnt"];
+        return $recs["cnt"];
     }
-
-    $result = mysqli_query($conn, "SELECT COUNT(*) cnt FROM friends WHERE friend=$useridx");
-    if ($result) {
-        $recs = mysqli_fetch_assoc($result);
-        $friends += $recs["cnt"];
-    }
-
-    return $friends;
 }
 
 function checkFriendExist($sql) {

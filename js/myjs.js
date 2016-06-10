@@ -186,14 +186,21 @@ $(document).ready(function() {
     $("#send-message-input").keydown(function(e) {
         if (e.which == 13) {
             var message = $("#send-message-input").val();
-            if (message == "")
-                return;
-
-            message = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
             var friendnameDiv = $("#friend-name").text();
             var friendName = friendnameDiv.split(" ")[0].trim();
             var friendEmail = friendnameDiv.split("(")[1].trim().slice(0, -1);
+
+            if (message == "") {
+                $.post("getUserIdx.php", {
+                    friendName: friendName,
+                    friendEmail: friendEmail
+                }).done (function (friendidx) {
+                    getMessage(friendidx);
+                });                
+
+                return;
+            }
+            message = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
             $.post("addMessage.php", {
                 friendName: friendName,
