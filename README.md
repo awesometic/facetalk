@@ -23,5 +23,3 @@ idx int(11) primary key auto_increment<br>
 user int(11)<br>
 to_user int(11)<br>
 message text<br>
-
-This may run on localhost only, see session.php file
