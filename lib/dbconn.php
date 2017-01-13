@@ -6,10 +6,10 @@
 // http://php.net/manual/en/language.variables.scope.php
 // http://php.net/manual/kr/language.variables.scope.php
 
-$host = "localhost";
-$user = "root";
+$host = "219.240.6.172:5555";
+$user = "awesometic";
 $pass = "awesometic";
-$database = "face_talk";
+$database = "facetalk";
 
 $conn = mysqli_connect($host, $user, $pass, $database);
 mysqli_query($conn, "SET NAMES 'utf8mb4'");
